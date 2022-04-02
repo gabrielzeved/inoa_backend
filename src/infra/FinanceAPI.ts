@@ -5,5 +5,5 @@ export interface FinanceAPI {
     symbol: string,
     to: number,
     from: number
-  ): Promise<StockCandle[]>;
+  ): Promise<StockCandle>;
 }

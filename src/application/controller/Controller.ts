@@ -1,38 +1,34 @@
-import { Request, Response, Router } from "express";
-import { inject, injectable } from "tsyringe";
-import { FinanceAPI } from "../../infra/FinanceAPI";
+import { GetStockHandle } from "../commands/GetStockHandle";
+import { NextFunction, Request, Response, Router } from "express";
+import { container, injectable } from "tsyringe";
+import HttpException from "../../common/errors/HttpException";
 
 @injectable()
 export class Controller {
   public router: Router = Router();
 
-  constructor(@inject("FinanceAPI") private financeApi: FinanceAPI) {
+  constructor() {
     this.router.get("/", this.getCandles.bind(this));
   }
 
-  async getCandles(req: Request, res: Response) {
-    const symbol = req.query.symbol as string;
-    const from = +(req.query.from as string);
-    const to = +(req.query.to as string);
+  async getCandles(req: Request, res: Response, next: NextFunction) {
+    const dataset = {
+      symbol: req.query.symbol as string,
+      from: req.query.from as any,
+      to: req.query.to as any,
+    };
 
-    if (!symbol) {
-      res
-        .status(400)
-        .send(" 'symbol' query variable is necessary for this search");
-      return;
-    }
-    if (!from) {
-      res
-        .status(400)
-        .send(" 'from' query variable is necessary for this search");
-      return;
-    }
-    if (!to) {
-      res.status(400).send(" 'to' query variable is necessary for this search");
-      return;
-    }
+    const instance = container.resolve(GetStockHandle);
 
-    const candles = await this.financeApi.getStockCandles(symbol, to, from);
-    res.send(JSON.stringify(candles));
+    try {
+      const candles = await instance.getCandles(
+        dataset.symbol,
+        dataset.from,
+        dataset.to
+      );
+      res.send(JSON.stringify(candles));
+    } catch (e) {
+      next(e);
+    }
   }
 }

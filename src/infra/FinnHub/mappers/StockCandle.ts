@@ -1,5 +1,4 @@
-import { StockCandle } from "../../domain/StockCandle";
-
+import { StockCandle } from "../../../domain/StockCandle";
 export const DataToStockCandleDomain = (data: any): StockCandle => {
   return {
     close: data.c,

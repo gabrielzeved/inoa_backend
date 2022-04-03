@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { injectable } from "tsyringe";
-import { StockCandle } from "../../domain/StockCandle";
-import { FinanceAPI } from "../FinanceAPI";
-import { DataToStockCandleDomain } from "../mappers/FinnHubToDomain";
+import { StockCandle } from "../../../domain/StockCandle";
+import { FinanceAPI } from "../../FinanceAPI";
+import { DataToStockCandleDomain } from "../mappers/StockCandle";
 
 @injectable()
 export class FinnHub implements FinanceAPI {

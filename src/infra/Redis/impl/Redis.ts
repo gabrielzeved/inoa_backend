@@ -1,5 +1,6 @@
 import Redis from "ioredis";
 import { StockCandle } from "../../../domain/StockCandle";
+import { StockSearch } from "../../../domain/StockSearch";
 import { CacheAPI } from "../../CacheAPI";
 import { FinanceAPI } from "../../FinanceAPI";
 
@@ -15,6 +16,20 @@ export class RedisApi implements CacheAPI {
       db: 0,
     });
   }
+  async search(term: string): Promise<StockSearch | undefined> {
+    const data = await this.redis.get(`search:${term}`);
+
+    if (data) {
+      const stockSearch = JSON.parse(data) as StockSearch;
+      return stockSearch;
+    }
+    return undefined;
+  }
+
+  async saveSearch(term: string, data: StockSearch) {
+    await this.redis.set(`search:${term}`, JSON.stringify(data), "EX", 1000);
+  }
+
   async saveStockCandles(
     symbol: string,
     to: number,

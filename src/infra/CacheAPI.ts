@@ -1,4 +1,5 @@
 import { StockCandle } from "../domain/StockCandle";
+import { StockSearch } from "../domain/StockSearch";
 
 export interface CacheAPI {
   getStockCandles(
@@ -13,4 +14,8 @@ export interface CacheAPI {
     from: number,
     data: StockCandle
   ): void;
+
+  search(term: string): Promise<StockSearch | undefined>;
+
+  saveSearch(term: string, data: StockSearch): void;
 }

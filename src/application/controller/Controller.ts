@@ -1,7 +1,7 @@
 import { GetStockHandle } from "../commands/GetStockHandle";
 import { NextFunction, Request, Response, Router } from "express";
 import { container, injectable } from "tsyringe";
-import HttpException from "../../common/errors/HttpException";
+import { SearchStock } from "../commands/SearchStock";
 
 @injectable()
 export class Controller {
@@ -9,6 +9,7 @@ export class Controller {
 
   constructor() {
     this.router.get("/", this.getCandles.bind(this));
+    this.router.get("/search", this.search.bind(this));
   }
 
   async getCandles(req: Request, res: Response, next: NextFunction) {
@@ -26,6 +27,21 @@ export class Controller {
         dataset.from,
         dataset.to
       );
+      res.send(JSON.stringify(candles));
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async search(req: Request, res: Response, next: NextFunction) {
+    const dataset = {
+      term: req.query.term as string,
+    };
+
+    const instance = container.resolve(SearchStock);
+
+    try {
+      const candles = await instance.search(dataset.term);
       res.send(JSON.stringify(candles));
     } catch (e) {
       next(e);

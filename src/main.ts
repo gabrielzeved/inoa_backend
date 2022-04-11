@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 require("dotenv").config();
 import "reflect-metadata";
 import { container } from "tsyringe";
@@ -15,6 +16,9 @@ container.registerSingleton<CacheAPI>("CacheAPI", RedisApi);
 const controller = container.resolve(Controller);
 
 const app = express();
+
+app.use(cors());
+
 app.use(controller.router);
 app.use(ErrorHandler);
 

@@ -14,7 +14,7 @@ export class Controller {
 
   async getCandles(req: Request, res: Response, next: NextFunction) {
     const dataset = {
-      symbol: req.query.symbol as string,
+      symbol: req.query.symbol as any,
       from: req.query.from as any,
       to: req.query.to as any,
     };

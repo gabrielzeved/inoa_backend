@@ -40,8 +40,8 @@ export class GetStockHandle {
 
     const cachedInfo = await this.cacheApi.getStockCandles(
       dataset.symbol,
-      dataset.to,
-      dataset.from
+      dataset.from,
+      dataset.to
     );
 
     if (cachedInfo) {
@@ -50,14 +50,14 @@ export class GetStockHandle {
 
     const candles = await this.financeApi.getStockCandles(
       dataset.symbol,
-      dataset.to,
-      dataset.from
+      dataset.from,
+      dataset.to
     );
 
     this.cacheApi.saveStockCandles(
       dataset.symbol,
-      dataset.to,
       dataset.from,
+      dataset.to,
       candles
     );
 

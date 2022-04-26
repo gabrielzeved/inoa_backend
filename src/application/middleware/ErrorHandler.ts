@@ -7,6 +7,7 @@ export function ErrorHandler(
   response: Response,
   next: NextFunction
 ) {
+  console.log(error);
   const status = error.status || 500;
   const errors = error.message || "Something went wrong";
   response.status(status).send({

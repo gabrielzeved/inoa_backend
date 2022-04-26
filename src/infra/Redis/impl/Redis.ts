@@ -46,10 +46,10 @@ export class RedisApi implements CacheAPI {
 
   async getStockCandles(
     symbol: string,
-    to: number,
-    from: number
+    from: number,
+    to: number
   ): Promise<StockCandle | undefined> {
-    const data = await this.redis.get(`sc:${symbol}-${to}-${from}`);
+    const data = await this.redis.get(`sc:${symbol}-${from}-${to}`);
 
     if (data) {
       const stockCandle = JSON.parse(data) as StockCandle;

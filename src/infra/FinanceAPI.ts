@@ -4,8 +4,8 @@ import { StockSearch } from "../domain/StockSearch";
 export interface FinanceAPI {
   getStockCandles(
     symbol: string,
-    to: number,
-    from: number
+    from: number,
+    to: number
   ): Promise<StockCandle>;
 
   search(term: string): Promise<StockSearch>;

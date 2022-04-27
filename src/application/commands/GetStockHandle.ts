@@ -1,4 +1,4 @@
-import { FinanceAPI } from "infra/FinanceAPI";
+import { FinanceAPI, Interval } from "infra/FinanceAPI";
 import { inject, injectable } from "tsyringe";
 import HttpException from "../../common/errors/HttpException";
 import { CacheAPI } from "../../infra/CacheAPI";
@@ -11,17 +11,24 @@ export class GetStockHandle {
     @inject("CacheAPI") private cacheApi: CacheAPI
   ) {}
 
-  async getCandles(symbol: string, from: number, to: number) {
+  async getCandles(
+    symbol: string,
+    from: number,
+    to: number,
+    interval: Interval
+  ) {
     const schema: ValidationSchema = {
       symbol: [Validator.required],
       from: [Validator.required, Validator.numeric],
       to: [Validator.required, Validator.numeric],
+      interval: [Validator.required],
     };
 
     const dataset = {
       symbol: symbol,
       from: from,
       to: to,
+      interval: interval,
     };
 
     const results = new Validator(dataset, schema).validate();
@@ -41,7 +48,8 @@ export class GetStockHandle {
     const cachedInfo = await this.cacheApi.getStockCandles(
       dataset.symbol,
       dataset.from,
-      dataset.to
+      dataset.to,
+      dataset.interval
     );
 
     if (cachedInfo) {
@@ -51,14 +59,16 @@ export class GetStockHandle {
     const candles = await this.financeApi.getStockCandles(
       dataset.symbol,
       dataset.from,
-      dataset.to
+      dataset.to,
+      dataset.interval
     );
 
     this.cacheApi.saveStockCandles(
       dataset.symbol,
       dataset.from,
       dataset.to,
-      candles
+      candles,
+      dataset.interval
     );
 
     return candles;

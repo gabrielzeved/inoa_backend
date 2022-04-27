@@ -17,6 +17,7 @@ export class Controller {
       symbol: req.query.symbol as any,
       from: req.query.from as any,
       to: req.query.to as any,
+      interval: req.query.interval as any,
     };
 
     const instance = container.resolve(GetStockHandle);
@@ -25,7 +26,8 @@ export class Controller {
       const candles = await instance.getCandles(
         dataset.symbol,
         dataset.from,
-        dataset.to
+        dataset.to,
+        dataset.interval
       );
       res.send(JSON.stringify(candles));
     } catch (e) {

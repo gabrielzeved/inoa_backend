@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { injectable } from "tsyringe";
 import { StockCandle } from "../../../domain/StockCandle";
 import { StockSearch } from "../../../domain/StockSearch";
-import { FinanceAPI } from "../../FinanceAPI";
+import { FinanceAPI, Interval } from "../../FinanceAPI";
 import { DataToStockCandleDomain } from "../mappers/StockCandle";
 import { DataToStockSearchDomain } from "../mappers/StockSearch";
 
@@ -25,12 +25,17 @@ export class YahooFinance implements FinanceAPI {
     return DataToStockSearchDomain(results);
   }
 
-  async getStockCandles(symbol: string, from: number, to: number) {
+  async getStockCandles(
+    symbol: string,
+    from: number,
+    to: number,
+    interval: Interval
+  ) {
     const options: AxiosRequestConfig<StockCandle> = {
       method: "GET",
       url: `https://yh-finance.p.rapidapi.com/stock/v3/get-chart`,
       params: {
-        interval: "1d",
+        interval: interval,
         symbol: symbol,
         region: "BR",
         period1: from,

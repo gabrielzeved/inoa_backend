@@ -8,14 +8,10 @@
     - Cacheamento das respostas 
 
   ### Tecnologias Utilizadas
-    - NodeJS
+    - ReactJS
     - Typescript
-    - Express
-    - Redis
-
-  Implementado utilizando DDD e Injeção de Dependências para maior desacoplamento e manutenibilidade
+    - SASS
 
   ### Passos para execução
 
-    - Inicialize o Docker
-    - Execute o comando `docker-compose up --build`
+    - Execute o comando `yarn start`

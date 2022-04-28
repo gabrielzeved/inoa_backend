@@ -22,5 +22,5 @@ app.use(cors());
 app.use(controller.router);
 app.use(ErrorHandler);
 
-console.log("Running on port : " + process.env.PORT || 8080);
-app.listen(process.env.PORT || 8080);
+console.log("Running on port : " + 8080);
+app.listen(8080);
